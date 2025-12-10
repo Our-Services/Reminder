@@ -1,0 +1,146 @@
+<!doctype html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>تذكيراتي</title>
+<link rel="stylesheet" href="styles.css">
+</head>
+<body>
+<header class="app-header">
+  <div class="header-right">
+    <div class="next-banner">
+      <span id="nextLabel">أقرب تذكير:</span>
+      <strong id="nextCountdown">لا يوجد تذكيرات</strong>
+    </div>
+    <button id="langIcon" class="icon-btn" aria-label="Language"></button>
+    <button id="openAdd" class="primary">إضافة تذكير</button>
+  </div>
+</header>
+
+<div id="overlay" class="overlay hidden"></div>
+<div id="addPopover" class="popover hidden">
+  <h3 id="popoverTitle" class="popover-title">إضافة تذكير</h3>
+  <form id="reminderForm" class="grid">
+    <div class="field">
+      <label id="lblSubject" for="subject">اسم المادة</label>
+      <input id="subject" name="subject" type="text" placeholder="مثلاً Statistics" required>
+    </div>
+    <div class="field">
+      <label id="lblTitle" for="title">العنوان (اختياري)</label>
+      <input id="title" name="title" type="text">
+    </div>
+
+    <div class="field">
+      <label id="lblType" for="type">النوع</label>
+      <select id="type" name="type" required>
+        <option value="اختبار شهري" id="optExam">اختبار شهري</option>
+        <option value="اسايمنت" id="optAssignment">اسايمنت/واجبات</option>
+        <option value="ريبورت" id="optReport">ريبورت/تقرير</option>
+        <option value="برزنتيشن/عرض تقديمي" id="optPresentation">برزنتيشن/عرض تقديمي</option>
+        <option value="اختبار نهائي" id="optFinal">اختبار نهائي</option>
+      </select>
+    </div>
+
+    <div class="field">
+      <label id="lblStart">البداية</label>
+      <div class="inline">
+        <label><input type="radio" name="startMode" value="started" checked> <span id="lblStartStarted">بدأت</span></label>
+        <label><input type="radio" name="startMode" value="schedule"> <span id="lblStartSchedule">تاريخ بداية</span></label>
+      </div>
+      <input id="startAt" name="startAt" type="datetime-local" class="hidden">
+    </div>
+
+    <div class="field">
+      <label id="lblDue" for="dueAt">آخر موعد للتسليم</label>
+      <input id="dueAt" name="dueAt" type="datetime-local" required>
+    </div>
+
+    <div class="field">
+      <label id="lblDelivery">طريقة التسليم</label>
+      <div class="inline">
+        <label><input type="radio" name="delivery" value="حضوري" checked> <span id="lblDeliveryInPerson">حضوري</span></label>
+        <label><input type="radio" name="delivery" value="CN"> CN</label>
+      </div>
+      <input id="room" name="room" type="text" placeholder="رقم القاعة">
+    </div>
+
+    <div class="field">
+      <label id="lblPoints" for="points">الدرجة</label>
+      <input id="points" name="points" type="number" min="0" max="100" step="1" placeholder="مثلاً 10%" required>
+    </div>
+
+    <div class="field">
+      <label id="lblPriority" for="priority">الأهمية</label>
+      <select id="priority" name="priority" required>
+        <option value="critical" id="optPriorityCritical">مهم جداً</option>
+        <option value="normal" id="optPriorityNormal">مهم</option>
+        <option value="low" id="optPriorityLow">غير مهم</option>
+      </select>
+    </div>
+
+    <div class="field span-2">
+      <label id="lblDetails" for="details">التفاصيل/المطلوب</label>
+      <textarea id="details" name="details" rows="3" placeholder="اكتب المطلوب"></textarea>
+    </div>
+
+    <div class="field span-2">
+      <label id="lblImages" for="images">صور للمطلوب</label>
+      <input id="images" name="images" type="file" accept="image/*" multiple>
+    </div>
+
+    <div class="actions span-2">
+      <button id="btnSubmit" type="submit" class="primary">إضافة</button>
+      <button id="btnReset" type="reset" class="ghost">مسح</button>
+    </div>
+  </form>
+</div>
+
+<main class="container">
+
+  <div class="lists-grid">
+    <section class="card">
+      <h2 id="listTitle" class="card-title">قائمة التذكيرات</h2>
+      <div id="reminders" class="list"></div>
+    </section>
+    <section class="card">
+      <h2 id="expiredTitle" class="card-title">التذكيرات المنتهية</h2>
+      <div id="expired" class="list"></div>
+    </section>
+  </div>
+</main>
+
+  <template id="reminderTemplate">
+  <div class="reminder-item">
+    <div class="reminder-head">
+      <div class="title-type">
+        <div class="title"></div>
+        <div class="type"></div>
+      </div>
+    </div>
+    <div class="reminder-body">
+      <div class="timers">
+        <div class="countdown"></div>
+        <div class="due"></div>
+      </div>
+      <div class="row">
+        <div class="chip delivery"></div>
+        <div class="chip room"></div>
+        <div class="chip points"></div>
+      </div>
+      <button class="expand-toggle" type="button"><span class="expand-text"></span><span class="expand-icon">▾</span></button>
+      <div class="expandable">
+        <div class="details hidden"></div>
+        <div class="images hidden"></div>
+      </div>
+    </div>
+  </div>
+  </template>
+
+<script src="https://www.gstatic.com/firebasejs/11.0.1/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/11.0.1/firebase-auth-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/11.0.1/firebase-firestore-compat.js"></script>
+<script>window.firebaseConfig=window.firebaseConfig||JSON.parse(localStorage.getItem('firebaseConfig')||'{}')</script>
+<script src="script.js"></script>
+</body>
+</html>
