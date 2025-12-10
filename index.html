@@ -20,7 +20,10 @@
 
 <div id="overlay" class="overlay hidden"></div>
 <div id="addPopover" class="popover hidden">
-  <h3 id="popoverTitle" class="popover-title">إضافة تذكير</h3>
+  <div class="popover-title" style="display:flex;align-items:center;justify-content:space-between">
+    <h3 id="popoverTitle" style="margin:0">إضافة تذكير</h3>
+    <button id="addClose" class="close-btn" aria-label="Close">✕</button>
+  </div>
   <form id="reminderForm" class="grid">
     <div class="field">
       <label id="lblSubject" for="subject">اسم المادة</label>
@@ -39,6 +42,7 @@
         <option value="ريبورت" id="optReport">ريبورت/تقرير</option>
         <option value="برزنتيشن/عرض تقديمي" id="optPresentation">برزنتيشن/عرض تقديمي</option>
         <option value="اختبار نهائي" id="optFinal">اختبار نهائي</option>
+        <option value="مشروع" id="optProject">مشروع/بروجكت</option>
       </select>
     </div>
 
@@ -100,7 +104,7 @@
 
   <div class="lists-grid">
     <section class="card">
-      <h2 id="listTitle" class="card-title">قائمة التذكيرات</h2>
+      <h2 class="card-title"><span id="listTitle">قائمة التذكيرات</span><span class="contact-inline"><button id="contactIcon" class="icon-btn" aria-label="Contact">✉</button><span id="contactHint" class="contact-hint">تواصل معنا</span></span></h2>
       <div id="reminders" class="list"></div>
     </section>
     <section class="card">
@@ -109,6 +113,21 @@
     </section>
   </div>
 </main>
+
+<div id="devBadge" class="dev-badge hidden">خيارات المطور</div>
+
+<div id="contactPopover" class="popover hidden">
+  <div class="popover-title" style="display:flex;align-items:center;justify-content:space-between">
+    <h3 id="contactTitle" style="margin:0">معلومات التواصل مع المطور AHMAD</h3>
+    <button id="contactClose" class="close-btn">✕</button>
+  </div>
+  <div class="cta-list">
+    <div id="wa1" class="cta-box green"><span class="icon icon-whatsapp"></span><span id="wa1Label">واتساب</span><span class="cta-number force-ltr">+966 500900329</span></div>
+    <div id="wa2" class="cta-box green"><span class="icon icon-whatsapp"></span><span id="wa2Label">واتساب</span><span class="cta-number force-ltr">+60 1120721104</span></div>
+    <div id="tgTry" class="cta-subtitle">جرّب بوت التحضير التلقائي الآن</div>
+    <div id="tg" class="cta-box blue glow"><span class="icon icon-telegram"></span><span id="tgLabel">UAttend</span></div>
+  </div>
+</div>
 
   <template id="reminderTemplate">
   <div class="reminder-item">
@@ -153,5 +172,7 @@ window.firebaseConfig={
 </script>
 <script>window.imgbbKey='c33abaf17a36e4a9af04ed2d90cdd6c1';window.imgbbExpiration=600;</script>
 <script src="script.js"></script>
+
+<footer class="app-footer" id="footerRights">Ahmad Alhomsi © 2025 جميع الحقوق محفوظة لـ</footer>
 </body>
 </html>
